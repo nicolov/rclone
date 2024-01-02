@@ -1,4 +1,4 @@
-<!-- 
+<!--
 // Copyright 2015 Matthew Holt and The Caddy Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +11,7 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License. 
+// limitations under the License.
 Modifications:  Adapted to rclone markup -->
 
 <!DOCTYPE html>
@@ -165,10 +165,12 @@ footer {
 	font-size: 12px;
 	text-align: center;
 }
+
 @media (max-width: 600px) {
-/*	.hideable {
+	.hideable {
 		display: none;
-	} removed to keep dates on mobile */
+	}
+
 	td:nth-child(2) {
 		width: auto;
 	}
@@ -239,6 +241,7 @@ footer {
 			<div class="meta">
 				<div id="summary">
 					<span class="meta-item"><input type="text" placeholder="filter" id="filter" onkeyup='filter()'></span>
+					<a href="?sort=time&order=desc" class="order">Sort by date</a>
 				</div>
 			</div>
 			<div class="listing">
@@ -248,7 +251,7 @@ footer {
 						<th></th>
 						<th>
 							<a href="?sort=namedirfirst&order=asc" class="icon sort order"><svg class="top" width="1em" height=".5em" version="1.1" viewBox="0 0 12.922194 6.0358899"><use xlink:href="#up-arrow"></use></svg><svg class="bottom" width="1em" height=".5em" version="1.1" viewBox="0 0 12.922194 6.0358899"><use xlink:href="#down-arrow"></use></svg></a>
-							
+
 							<a href="?sort=name&order=asc" class="order">Name</a>
 						</th>
 						<th>
@@ -290,7 +293,7 @@ footer {
 						<td data-order="{{.Size}}"><size>{{.Size}}</size></td>
 						{{- end}}
 						{{- if .ModTime | afterEpoch }}
-						<td class="hideable"><time datetime="{{.ModTime }}">{{.ModTime }}</time></td>
+						<td class="hideable"><time datetime="{{.ModTime }}">{{.ModTime.Format "2006.01.02" }}</time></td>
 						{{- else}}
 						<td class="hideable">—</td>
 						{{- end}}
@@ -356,24 +359,24 @@ footer {
 				var elements = document.getElementsByClassName(className);
 				for(var i = 0, length = elements.length; i < length; i++) {
 					var currHref = elements[i].href;
-					if(order=='desc'){ 
+					if(order=='desc'){
 						var chg = currHref.replace('desc', 'asc');
 						elements[i].href = chg;
 					}
-					if(order=='asc'){ 
+					if(order=='asc'){
 						var chg = currHref.replace('asc', 'desc');
 						elements[i].href = chg;
 					}
 				}
 			};
 			function readableFileSize(size) {
-				var units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+				var units = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 				var i = 0;
 				while(size >= 1024) {
 					size /= 1024;
 					++i;
 				}
-				return parseFloat(size).toFixed(2) + ' ' + units[i];
+				return Math.floor(parseFloat(size)) + ' ' + units[i];
 			}
 
 			function changeSize() {
